@@ -173,25 +173,6 @@ class Address
     /**
      * @return mixed
      */
-    public function getGeoLocation()
-    {
-        return $this->geoLocation;
-    }
-
-    /**
-     * @param mixed $geoLocation
-     * @return Address
-     */
-    public function setGeoLocation($geoLocation)
-    {
-        $this->geoLocation = $geoLocation;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
     public function getLatitude()
     {
         return $this->latitude;

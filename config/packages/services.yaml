@@ -19,3 +19,4 @@ services:
             - '@security.user_password_encoder.generic'
         tags:
             - { name: kernel.event_subscriber }
+

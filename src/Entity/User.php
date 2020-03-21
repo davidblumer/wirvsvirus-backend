@@ -34,7 +34,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  *     collectionOperations={
- *         "register"={
+ *         "api_register"={
  *             "method"="POST",
  *         },
  *     },
