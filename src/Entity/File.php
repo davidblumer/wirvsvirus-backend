@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use App\Helper\FileName;
-use Symfony\Component\HttpFoundation\File\File;
-use Knp\DoctrineBehaviors\Model as ORMBehaviors;
+use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File as VichyFile;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-class Image
+/**
+ * @ORM\Entity(repositoryClass="App\Repository\FileRepository")
+ */
+class File
 {
-    use ORMBehaviors\Blameable\BlameableTrait,
-        ORMBehaviors\Timestampable\TimestampableTrait;
-
     /**
      * @ORM\Id
      * @ORM\Column(type="guid")
@@ -21,7 +23,7 @@ class Image
     /**
      * @Vich\UploadableField(mapping="uploaded_image", fileNameProperty="imageName")
      *
-     * @var File
+     * @var VichyFile
      */
     protected $imageFile;
 
@@ -63,7 +65,7 @@ class Image
     }
 
     /**
-     * @return File|null
+     * @return VichyFile
      */
     public function getImageFile()
     {
@@ -73,7 +75,7 @@ class Image
     /**
      * @param string $imageName
      *
-     * @return Image
+     * @return File
      */
     public function setImageName($imageName)
     {

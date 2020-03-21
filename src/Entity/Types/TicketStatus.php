@@ -2,10 +2,11 @@
 
 namespace App\Entity\Types;
 
-class UserType
+class TicketStatus
 {
     use \App\Entity\Traits\Enum;
 
-    const BUYER    = 'BUYER';
-    const SUPPLIER = 'SUPPLIER';
+    const OPEN        = 'OPEN';
+    const IN_PROGRESS = 'IN_PROGRESS';
+    const FINISHED    = 'FINISHED';
 }

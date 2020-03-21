@@ -1,3 +1,13 @@
 easy_admin:
+    site_name: Nachbarschaftshilfe
+    user:
+        display_name: true
+        display_avatar: true
+        name_property_path: 'email'
+    design:
+        brand_color: '#E36397'
     entities:
         - App\Entity\User
+        - App\Entity\Ticket
+        - App\Entity\Comment
+        - App\Entity\File

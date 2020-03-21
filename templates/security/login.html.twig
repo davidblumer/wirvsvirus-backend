@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        
-    </body>
-</html>
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <form
+        action="{{ path('login') }}"
+        method="post"
+    >
+        <input
+            type="email"
+            name="email"
+            value="wirvsvirus@spomsoree.dev"
+        />
+        <input
+            type="password"
+            name="password"
+            value="joshua"
+        />
+        <button type="submit">login</button>
+    </form>
+{% endblock %}
