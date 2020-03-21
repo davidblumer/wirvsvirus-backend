@@ -16,7 +16,6 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -39,7 +38,6 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -51,7 +49,6 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -63,6 +60,7 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
+     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -74,6 +72,7 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
+     *     "ticket_read",
      *     "ticket_write",
      * })
      */

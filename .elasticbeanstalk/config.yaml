@@ -1,0 +1,13 @@
+branch-defaults:
+  develop:
+    environment: Nachbarschaftshilfe-env
+    group_suffix: null
+global:
+  application_name: Nachbarschaftshilfe
+  branch: null
+  default_ec2_keyname: wirvsvirus
+  default_platform: PHP 7.3 running on 64bit Amazon Linux/2.9.3
+  default_region: eu-central-1
+  profile: eb-cli
+  repository: null
+  sc: git

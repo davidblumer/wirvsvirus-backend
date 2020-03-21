@@ -51,7 +51,7 @@ class Ticket
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Groups({
-     *     "ticket_read"
+     *     "ticket_read",
      * })
      */
     private $id;
@@ -73,10 +73,6 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
-     *
-     * @Groups({
-     *     "ticket_read",
-     * })
      */
     private $acceptedBy;
 
@@ -92,19 +88,11 @@ class Ticket
 
     /**
      * @ORM\Column(type="string")
-     *
-     * @Groups({
-     *     "ticket_read",
-     * })
      */
     private $status;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="ticket")
-     *
-     * @Groups({
-     *     "ticket_read",
-     * })
      */
     private $comments;
 

@@ -34,8 +34,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  *     collectionOperations={
- *         "post"={
- *             "method"="POST"
+ *         "register"={
+ *             "method"="POST",
  *         },
  *     },
  * )
@@ -66,14 +66,13 @@ class User implements UserInterface
     private $roles = [];
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
+     *
+     * @Groups({
+     *     "user_read",
+     * })
      */
-    private $token;
-
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $tokenExpireDate;
+    private $apiToken;
 
     /**
      * @ORM\Column(type="string")
@@ -199,37 +198,18 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getToken()
+    public function getApiToken()
     {
-        return $this->token;
+        return $this->apiToken;
     }
 
     /**
-     * @param mixed $token
+     * @param mixed $apiToken
      * @return User
      */
-    public function setToken($token)
+    public function setApiToken($apiToken)
     {
-        $this->token = $token;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getTokenExpireDate()
-    {
-        return $this->tokenExpireDate;
-    }
-
-    /**
-     * @param mixed $tokenExpireDate
-     * @return User
-     */
-    public function setTokenExpireDate($tokenExpireDate)
-    {
-        $this->tokenExpireDate = $tokenExpireDate;
+        $this->apiToken = $apiToken;
 
         return $this;
     }

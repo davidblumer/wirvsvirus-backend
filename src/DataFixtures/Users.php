@@ -25,13 +25,9 @@ class Users extends Fixture
 
         $user->setAddress($address);
         $user->setRoles(['ROLE_USER', 'ROLE_ADMIN']);
-        $user->setType(UserType::BUYER);
         $user->setPaypal('https://paypal.me/spomsoree');
         $user->setEmail('wirvsvirus@spomsoree.dev');
-        $user->setPassword($this->passwordEncoder->encodePassword(
-            $user,
-            'joshua'
-        ));
+        $user->setPassword($this->passwordEncoder->encodePassword($user,'joshua'));
 
         $manager->persist($user);
         $manager->flush();
