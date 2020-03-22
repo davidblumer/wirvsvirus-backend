@@ -27,22 +27,26 @@ class TicketApiSubscriber implements EventSubscriberInterface
 
     /**
      * @param ViewEvent $event
+     * @throws \ReflectionException
      */
     public function checkAddress(ViewEvent $event)
     {
         $request = $event->getRequest();
         $method  = $request->getMethod();
         $entity  = $event->getControllerResult();
+        $user    = $this->tokenStorage->getToken()->getUser();
 
-        if ($method === Request::METHOD_POST && $entity instanceof Ticket) {
-            $ticketAddress = $entity->getAddress();
-
-            if (!$ticketAddress->getStreet()) {
-                $user        = $this->tokenStorage->getToken()->getUser();
-                $userAddress = $user->getAddress();
+        if ($entity instanceof Ticket) {
+            if ($method === Request::METHOD_POST) {
+                $ticketAddress = $entity->getAddress();
 
                 $entity->setCreator($user);
-                $entity->setAddress($userAddress);
+
+                if (!$ticketAddress->getLatitude() || !$ticketAddress->getLongitude()) {
+                    $userAddress = $user->getAddress();
+
+                    $entity->setAddress($userAddress);
+                }
             }
         }
     }

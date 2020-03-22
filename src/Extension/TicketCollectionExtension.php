@@ -38,18 +38,19 @@ class TicketCollectionExtension extends BaseExtension
                 $queryBuilder
                     ->andWhere(sprintf('%s.status >= :open', $rootAlias))
                     ->addSelect(sprintf(
-                        '( 3959 * ACOS(COS(RADIANS(' . $latitude . '))' .
-                        '* COS( RADIANS( %1$s.address.latitude ) )' .
-                        '* COS( RADIANS( %1$s.address.longitude )' .
-                        '- RADIANS(' . $longitude . ') )' .
-                        '+ SIN( RADIANS(' . $latitude . ') )' .
-                        '* SIN( RADIANS( %1$s.address.latitude ) ) ) ) AS distance',
+                        '( 6371 * acos( cos( radians(:latitude) )
+                                * cos( radians( %1$s.address.latitude ) )
+                                * cos( radians( %1$s.address.longitude )
+                                - radians(:longitude) )
+                                + sin( radians(:latitude) )
+                                * sin( radians( %1$s.address.latitude ) ) ) ) AS distance',
                         $rootAlias
                     ))
                     ->orderBy('distance', Criteria::ASC)
                     ->setParameter('open', TicketStatus::OPEN)
+                    ->setParameter('longitude', $longitude)
+                    ->setParameter('latitude', $latitude)
                 ;
-
                 // TODO: Remove distance
             }
         }

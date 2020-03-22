@@ -48,6 +48,7 @@ class User implements UserInterface
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Groups({
+     *     "user_read",
      *     "ticket_read",
      * })
      */
@@ -97,7 +98,6 @@ class User implements UserInterface
      *
      * @Groups({
      *     "user_read",
-     *     "ticket_read",
      *     "user_write",
      * })
      */

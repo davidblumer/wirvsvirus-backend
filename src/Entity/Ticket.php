@@ -92,6 +92,11 @@ class Ticket
 
     /**
      * @ORM\Column(type="string")
+     *
+     * @Groups({
+     *     "ticket_read",
+     *     "ticket_write",
+     * })
      */
     private $status;
 
@@ -162,12 +167,19 @@ class Ticket
         return $this;
     }
 
-    public function getAcceptedBy(): ?User
+    /**
+     * @return mixed
+     */
+    public function getAcceptedBy()
     {
         return $this->acceptedBy;
     }
 
-    public function setAcceptedBy(?User $acceptedBy): self
+    /**
+     * @param mixed $acceptedBy
+     * @return Ticket
+     */
+    public function setAcceptedBy($acceptedBy)
     {
         $this->acceptedBy = $acceptedBy;
 

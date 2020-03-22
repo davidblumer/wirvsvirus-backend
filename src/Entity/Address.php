@@ -55,7 +55,7 @@ class Address
     private $city;
 
     /**
-     * @ORM\Column(type="decimal", precision=18, scale=12, nullable=true)
+     * @ORM\Column(type="decimal", precision=18, scale=12)
      *
      * @Groups({
      *     "user_read",
@@ -67,7 +67,7 @@ class Address
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=18, scale=12, nullable=true)
+     * @ORM\Column(type="decimal", precision=18, scale=12)
      *
      * @Groups({
      *     "user_read",

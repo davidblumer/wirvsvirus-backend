@@ -7,16 +7,8 @@ services:
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
 
-    App\Subscriber\TicketApiSubscriber:
-        arguments:
-            - '@security.token_storage'
+    listener.event.jwt_authenticated_listener:
+        class: App\Listener\AuthenticationSuccessListener
         tags:
-            - { name: kernel.event_subscriber }
-
-    App\Subscriber\UserSubscriber:
-        arguments:
-            - '@doctrine.orm.entity_manager'
-            - '@security.user_password_encoder.generic'
-        tags:
-            - { name: kernel.event_subscriber }
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
 
