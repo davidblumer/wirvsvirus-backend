@@ -46,6 +46,10 @@ class User implements UserInterface
      * @ORM\Id
      * @ORM\Column(type="guid")
      * @ORM\GeneratedValue(strategy="UUID")
+     *
+     * @Groups({
+     *     "ticket_read",
+     * })
      */
     private $id;
 
@@ -61,18 +65,23 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string")
+     *
+     * @Groups({
+     *     "ticket_read",
+     * })
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $lastName;
+
+    /**
      * @ORM\Column(type="json")
      */
     private $roles = [];
-
-    /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
-     *
-     * @Groups({
-     *     "user_read",
-     * })
-     */
-    private $apiToken;
 
     /**
      * @ORM\Column(type="string")
@@ -168,29 +177,20 @@ class User implements UserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
+     * @return mixed
      */
-    public function getUsername(): string
+    public function getFirstName()
     {
-        return (string)$this->email;
+        return $this->firstName;
     }
 
     /**
-     * @see UserInterface
+     * @param mixed $firstName
+     * @return User
      */
-    public function getRoles(): array
+    public function setFirstName($firstName)
     {
-        $roles   = $this->roles;
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(array $roles): self
-    {
-        $this->roles = $roles;
+        $this->firstName = $firstName;
 
         return $this;
     }
@@ -198,18 +198,18 @@ class User implements UserInterface
     /**
      * @return mixed
      */
-    public function getApiToken()
+    public function getLastName()
     {
-        return $this->apiToken;
+        return $this->lastName;
     }
 
     /**
-     * @param mixed $apiToken
+     * @param mixed $lastName
      * @return User
      */
-    public function setApiToken($apiToken)
+    public function setLastName($lastName)
     {
-        $this->apiToken = $apiToken;
+        $this->lastName = $lastName;
 
         return $this;
     }
@@ -217,33 +217,42 @@ class User implements UserInterface
     /**
      * @see UserInterface
      */
-    public function getPassword(): string
+    public function getUsername()
     {
-        return (string)$this->password;
+        return (string)$this->email;
     }
 
-    public function setPassword(string $password): self
+    /**
+     * @see UserInterface
+     */
+    public function getRoles()
+    {
+        $roles   = $this->roles;
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
         return $this;
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
-    {
-        // not needed when using the "bcrypt" algorithm in security.yaml
-    }
-
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
     /**
@@ -375,5 +384,21 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getSalt()
+    {
+        // TODO: Implement getSalt() method.
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function eraseCredentials()
+    {
+        // TODO: Implement eraseCredentials() method.
     }
 }

@@ -26,19 +26,19 @@ security:
         api:
             pattern: ^/api/(?!.*doc|users).*?
             stateless: true
-            #anonymous: true # TODO: Allow /api/users POST
             guard:
                 authenticators:
                     - lexik_jwt_authentication.jwt_token_authenticator
         main:
             anonymous: lazy
-            logout: ~
+            logout:
+                path: logout
             form_login:
                 username_parameter: email
                 password_parameter: password
                 login_path: /admin/login
                 check_path: /admin/login
-                default_target_path: /admin/dashbaord
+                default_target_path: /admin/dashboard
                 failure_path: /admin/login
                 always_use_default_target_path: true
             json_login:
@@ -55,9 +55,10 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/admin/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/admin,        roles: [ROLE_ADMIN] }
 
-        - { path: ^/api$,       roles: [ROLE_ADMIN] }
-        - { path: ^/api/doc,    roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
-        - { path: ^/api/tokens, roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['OPTIONS', 'POST'] }
-        - { path: ^/api/users,  roles: IS_AUTHENTICATED_ANONYMOUSLY, methods: ['POST']            }
+        - { path: ^/api$,         roles: [ROLE_ADMIN] }
+        - { path: ^/api/doc,      roles: [IS_AUTHENTICATED_ANONYMOUSLY] }
+        - { path: ^/api/tokens,   roles: [IS_AUTHENTICATED_ANONYMOUSLY], methods: ['OPTIONS', 'POST'] }
+        - { path: ^/api/users,    roles: [IS_AUTHENTICATED_ANONYMOUSLY], methods: ['POST']            }

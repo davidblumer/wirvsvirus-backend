@@ -79,22 +79,6 @@ class Address
     private $longitude;
 
     /**
-     * Address constructor.
-     *
-     * @param null $street
-     * @param null $houseNumber
-     * @param null $city
-     * @param null $postalCode
-     */
-    public function __construct($street = null, $houseNumber = null, $city = null, $postalCode = null)
-    {
-        $this->setStreet($street);
-        $this->setHouseNumber($houseNumber);
-        $this->setCity($city);
-        $this->setPostalCode($postalCode);
-    }
-
-    /**
      * @return mixed
      */
     public function getStreet()

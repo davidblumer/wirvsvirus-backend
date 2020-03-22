@@ -68,6 +68,10 @@ class Ticket
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
+     *
+     * @Groups({
+     *     "ticket_read",
+     * })
      */
     private $creator;
 
@@ -112,6 +116,9 @@ class Ticket
         return $this->getTitle();
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;

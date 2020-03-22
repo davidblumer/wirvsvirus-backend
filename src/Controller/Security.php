@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -51,22 +50,16 @@ class Security extends AbstractController
         $serializer  = new Serializer($normalizers, $encoders);
         $user        = $serializer->deserialize($content, User::class, 'json');
 
-        $address  = new Address('', '', '', '');
+        $addressArray = $user->getAddress();
+        $address      = new Address();
+
+        $address->setStreet(array_key_exists('street', $addressArray) ? $addressArray['street'] : null);
+        $address->setHouseNumber(array_key_exists('houseNumber', $addressArray) ? $addressArray['houseNumber'] : null);
+        $address->setPostalCode(array_key_exists('postalCode', $addressArray) ? $addressArray['postalCode'] : null);
+        $address->setCity(array_key_exists('city', $addressArray) ? $addressArray['city'] : null);
 
         $user->setRoles(['ROLE_USER']);
         $user->setAddress($address);
-
-        /*
-         *
-  "address": {
-    "street": "Straße",
-    "houseNumber": "0",
-    "postalCode": "00000",
-    "city": "Musterstadt",
-    "latitude": "1",
-    "longitude": "2"
-  },
-         */
 
         // TODO: Fix Address
 

@@ -37,7 +37,7 @@ class TicketApiSubscriber implements EventSubscriberInterface
         if ($method === Request::METHOD_POST && $entity instanceof Ticket) {
             $ticketAddress = $entity->getAddress();
 
-            if ($ticketAddress) {
+            if (!$ticketAddress->getStreet()) {
                 $user        = $this->tokenStorage->getToken()->getUser();
                 $userAddress = $user->getAddress();
 
