@@ -2,12 +2,18 @@
 
 namespace App\Controller;
 
+use App\Entity\Address;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
 
 class Security extends AbstractController
 {
@@ -29,34 +35,29 @@ class Security extends AbstractController
     }
 
     /**
-     * TODO: Make secure
-     * @Route("/api/login", name="api_login", methods={"POST"})
+     * @Route("/api/users", name="api_register", methods={"POST"})
      *
-     * @param AuthenticationUtils $authenticationUtils
      * @param Request $request
-     * @return Response
-     * @throws \Exception
+     * @return RedirectResponse
+     * @throws ExceptionInterface
      */
-    public function apiLogin(AuthenticationUtils $authenticationUtils, Request $request)
+    public function apiRegister(Request $request)
     {
-        $email    = $request->get('email');
-        $password = $request->get('password');
-        $token    = 'Error';
+        $manager      = $this->getDoctrine()->getManager();
+        $content      = $request->getContent();
+        $encoders     = [new JsonEncoder()];
+        $normalizers  = [new ObjectNormalizer()];
+        $serializer   = new Serializer($normalizers, $encoders);
+        $user         = $serializer->deserialize($content, User::class, 'json');
+        $addressArray = $user->getAddress();
+        $address      = $serializer->denormalize($addressArray, Address::class);
 
-        $manager = $this->getDoctrine()->getManager();
-        $user    = $manager->getRepository(User::class)->findOneByEmail($email);
+        $user->setRoles(['ROLE_USER']);
+        $user->setAddress($address);
 
-        if ($user && $user->getPassword() === $password) {
-            $token      = rand();
-            $expireDate = (new \DateTime())->add(new \DateInterval('P1D'));
+        $manager->persist($user);
+        $manager->flush();
 
-            $user->setToken($token);
-            $user->setTokenExpireDate($expireDate);
-
-            $manager->persist($user);
-            $manager->flush();
-        }
-
-        return new Response($token);
+        return new RedirectResponse('/api/users/' . $user->getId());
     }
 }

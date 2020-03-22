@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Types\TicketStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  * )
+ * @ApiFilter(SearchFilter::class, properties={"creator": "exact"})
  */
 class Ticket
 {
@@ -51,7 +54,8 @@ class Ticket
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Groups({
-     *     "ticket_read"
+     *     "user_read",
+     *     "ticket_read",
      * })
      */
     private $id;
@@ -67,9 +71,14 @@ class Ticket
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
+     * @ORM\Column(type="string")
+     *
+     * @Groups({
+     *     "ticket_read",
+     *     "ticket_write",
+     * })
      */
-    private $creator;
+    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
@@ -77,6 +86,11 @@ class Ticket
      * @Groups({
      *     "ticket_read",
      * })
+     */
+    private $creator;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
      */
     private $acceptedBy;
 
@@ -95,6 +109,7 @@ class Ticket
      *
      * @Groups({
      *     "ticket_read",
+     *     "ticket_write",
      * })
      */
     private $status;
@@ -124,6 +139,9 @@ class Ticket
         return $this->getTitle();
     }
 
+    /**
+     * @return string|null
+     */
     public function getId(): ?string
     {
         return $this->id;
@@ -151,6 +169,25 @@ class Ticket
     /**
      * @return mixed
      */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     * @return Ticket
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
     public function getCreator()
     {
         return $this->creator;
@@ -167,12 +204,19 @@ class Ticket
         return $this;
     }
 
-    public function getAcceptedBy(): ?User
+    /**
+     * @return mixed
+     */
+    public function getAcceptedBy()
     {
         return $this->acceptedBy;
     }
 
-    public function setAcceptedBy(?User $acceptedBy): self
+    /**
+     * @param mixed $acceptedBy
+     * @return Ticket
+     */
+    public function setAcceptedBy($acceptedBy)
     {
         $this->acceptedBy = $acceptedBy;
 

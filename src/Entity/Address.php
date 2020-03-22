@@ -16,7 +16,6 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -39,7 +38,6 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
@@ -51,49 +49,34 @@ class Address
      * @Groups({
      *     "user_read",
      *     "user_write",
-     *     "ticket_read",
      *     "ticket_write",
      * })
      */
     private $city;
 
     /**
-     * @ORM\Column(type="decimal", precision=18, scale=12, nullable=true)
+     * @ORM\Column(type="decimal", precision=18, scale=12)
      *
      * @Groups({
      *     "user_read",
      *     "user_write",
+     *     "ticket_read",
      *     "ticket_write",
      * })
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=18, scale=12, nullable=true)
+     * @ORM\Column(type="decimal", precision=18, scale=12)
      *
      * @Groups({
      *     "user_read",
      *     "user_write",
+     *     "ticket_read",
      *     "ticket_write",
      * })
      */
     private $longitude;
-
-    /**
-     * Address constructor.
-     *
-     * @param null $street
-     * @param null $houseNumber
-     * @param null $city
-     * @param null $postalCode
-     */
-    public function __construct($street = null, $houseNumber = null, $city = null, $postalCode = null)
-    {
-        $this->setStreet($street);
-        $this->setHouseNumber($houseNumber);
-        $this->setCity($city);
-        $this->setPostalCode($postalCode);
-    }
 
     /**
      * @return mixed
@@ -167,25 +150,6 @@ class Address
     public function setCity($city)
     {
         $this->city = $city;
-
-        return $this;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getGeoLocation()
-    {
-        return $this->geoLocation;
-    }
-
-    /**
-     * @param mixed $geoLocation
-     * @return Address
-     */
-    public function setGeoLocation($geoLocation)
-    {
-        $this->geoLocation = $geoLocation;
 
         return $this;
     }

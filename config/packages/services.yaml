@@ -1,0 +1,14 @@
+services:
+    extension.tickets:
+        class: App\Extension\TicketCollectionExtension
+        public: false
+        arguments:
+            - '@request_stack'
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection, priority: 9 }
+
+    listener.event.jwt_authenticated_listener:
+        class: App\Listener\AuthenticationSuccessListener
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_authentication_success, method: onAuthenticationSuccessResponse }
+

@@ -1,0 +1,13 @@
+services:
+    App\Subscriber\TicketApiSubscriber:
+        arguments:
+            - '@security.token_storage'
+        tags:
+            - { name: kernel.event_subscriber }
+
+    App\Subscriber\UserSubscriber:
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@security.user_password_encoder.generic'
+        tags:
+            - { name: kernel.event_subscriber }
