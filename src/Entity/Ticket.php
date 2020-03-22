@@ -2,7 +2,9 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Entity\Types\TicketStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -42,6 +44,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *         },
  *     },
  * )
+ * @ApiFilter(SearchFilter::class, properties={"creator": "exact"})
  */
 class Ticket
 {
@@ -51,6 +54,7 @@ class Ticket
      * @ORM\GeneratedValue(strategy="UUID")
      *
      * @Groups({
+     *     "user_read",
      *     "ticket_read",
      * })
      */
@@ -65,6 +69,16 @@ class Ticket
      * })
      */
     private $title;
+
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Groups({
+     *     "ticket_read",
+     *     "ticket_write",
+     * })
+     */
+    private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity="User", inversedBy="tickets")
@@ -102,6 +116,10 @@ class Ticket
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="ticket")
+     *
+     * @Groups({
+     *     "ticket_read",
+     * })
      */
     private $comments;
 
@@ -144,6 +162,25 @@ class Ticket
     public function setTitle($title)
     {
         $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param mixed $description
+     * @return Ticket
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
 
         return $this;
     }

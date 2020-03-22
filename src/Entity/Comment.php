@@ -22,7 +22,7 @@ class Comment
      * @ORM\ManyToOne(targetEntity="User", inversedBy="comments")
      *
      * @Groups({
-     *     "ticket_read"
+     *     "ticket_read",
      * })
      */
     private $user;
@@ -36,7 +36,7 @@ class Comment
      * @ORM\Column(type="string", length=10000)
      *
      * @Groups({
-     *     "ticket_read"
+     *     "ticket_read",
      * })
      */
     private $text;
@@ -45,10 +45,15 @@ class Comment
      * @ORM\OneToOne(targetEntity="File")
      *
      * @Groups({
-     *     "ticket_read"
+     *     "ticket_read",
      * })
      */
     private $file;
+
+    public function __toString()
+    {
+        return $this->getText();
+    }
 
     public function getId(): ?string
     {
